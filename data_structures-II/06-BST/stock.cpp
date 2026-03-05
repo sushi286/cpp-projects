@@ -8,32 +8,41 @@
 //*****************************************************************************************************
 
 #include "stock.h"
-#include <iostream>
+#include <iomanip>
 
-//*****************************************************************************************************
+Stock::Stock(string n,string s,double p) {
 
-Stock::Stock(const std::string &name, const std::string &symbol, double price) {
-    companyName = name;
-    stockSymbol = symbol;
-    stockPrice = price;
+    name = n;
+    symbol = s;
+    price = p;
 }
 
-//*****************************************************************************************************
-
-Stock::Stock(const Stock &s) {
-    companyName = s.companyName;
-    stockSymbol = s.stockSymbol;
-    stockPrice = s.stockPrice;
+string Stock::getName() const {
+    return name;
 }
 
-//*****************************************************************************************************
+string Stock::getSymbol() const {
+    return symbol;
+}
 
-std::ostream &operator<<(std::ostream &out, const Stock &stock) {
-    out << stock.companyName << std::endl
-        << stock.stockSymbol << std::endl
-        << stock.stockPrice;               
+double Stock::getPrice() const {
+    return price;
+}
+
+bool Stock::operator<(const Stock& other) const {
+    return symbol < other.symbol;
+}
+
+bool Stock::operator==(const Stock& other) const {
+    return symbol == other.symbol;
+}
+
+ostream& operator<<(ostream& out,const Stock& s) {
+
+    out<<s.name<<endl;
+    out<<s.symbol<<endl;
+    out<<fixed<<setprecision(2)<<s.price;
 
     return out;
 }
-
 //*****************************************************************************************************
