@@ -8,74 +8,30 @@
 #ifndef STOCK_H
 #define STOCK_H
 
-//*****************************************************************************************************
-
+#include <iostream>
 #include <string>
-
-//*****************************************************************************************************
+using namespace std;
 
 class Stock {
-private:
-    std::string companyName;
-    std::string stockSymbol;
-    double stockPrice;
 
-    friend std::ostream &operator<<(std::ostream &out, const Stock &stock);
+private:
+
+    string name;
+    string symbol;
+    double price;
 
 public:
-    Stock(const std::string &name = "", const std::string &symbol = "", double price = 0);
-    Stock(const Stock &s);
-    std::string getName() const;
-    std::string getSymbol() const;
+
+    Stock(string n="",string s="",double p=0);
+
+    string getName() const;
+    string getSymbol() const;
     double getPrice() const;
-    bool operator==(const Stock &rhs) const;
-    bool operator!=(const Stock &rhs) const;
-    bool operator>(const Stock &rhs) const;
-    bool operator<(const Stock &rhs) const;
+
+    bool operator<(const Stock& other) const;
+    bool operator==(const Stock& other) const;
+
+    friend ostream& operator<<(ostream& out,const Stock& s);
 };
-
-//*****************************************************************************************************
-
-inline std::string Stock::getName() const {
-    return companyName;
-}
-
-//*****************************************************************************************************
-
-inline std::string Stock::getSymbol() const {
-    return stockSymbol;
-}
-
-//*****************************************************************************************************
-
-inline double Stock::getPrice() const {
-    return stockPrice;
-}
-
-//*****************************************************************************************************
-
-inline bool Stock::operator==(const Stock &rhs) const {
-    return (stockSymbol == rhs.stockSymbol);
-}
-
-//*****************************************************************************************************
-
-inline bool Stock::operator!=(const Stock &rhs) const {
-    return (stockSymbol != rhs.stockSymbol);
-}
-
-//*****************************************************************************************************
-
-inline bool Stock::operator>(const Stock &rhs) const {
-    return (stockSymbol > rhs.stockSymbol);
-}
-
-//*****************************************************************************************************
-
-inline bool Stock::operator<(const Stock &rhs) const {
-    return (stockSymbol < rhs.stockSymbol);
-}
-
-//*****************************************************************************************************
 
 #endif
