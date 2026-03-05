@@ -21,13 +21,9 @@
 #include <string>
 using namespace std;
 
-//*****************************************************************************************************
-
 bool readStocks(BST<Stock> &stockTree);
 void traverseBST(BST<int> &intTree);
 void displayMenu(BST<Stock> &stockTree);
-
-//*****************************************************************************************************
 
 int main() {
     BST<int> intTree;
@@ -50,15 +46,12 @@ int main() {
     return 0;
 }
 
-//*****************************************************************************************************
-
 bool readStocks(BST<Stock> &stockTree) {
     ifstream inFile("Stock.txt");
     bool success = true;
 
     if (inFile.is_open()) {
-        string name,
-               symbol;
+        string name, symbol;
         double price;
 
         while (getline(inFile, name) && getline(inFile, symbol) && inFile >> price) {
@@ -73,9 +66,7 @@ bool readStocks(BST<Stock> &stockTree) {
     inFile.close();
 
     return success;
-}   
-
-//*****************************************************************************************************
+}
 
 void traverseBST(BST<int> &intTree) {
     cout << "In-order: " << endl;
@@ -88,12 +79,9 @@ void traverseBST(BST<int> &intTree) {
     intTree.postOrder();
 }
 
-//*****************************************************************************************************
-
 void displayMenu(BST<Stock> &stockTree) {
     ofstream outFile("Stock.txt");
-    string name,
-        symbol;
+    string name, symbol;
     double price;
     char choice;
 
@@ -109,69 +97,69 @@ void displayMenu(BST<Stock> &stockTree) {
         choice = tolower(choice);
 
         switch (choice) {
-            case 'a':
-            case 'b': {
-                cout << "\nEnter stock symbol: ";
-                cin >> symbol;
-                Stock *pStock = stockTree.search(Stock("", symbol));
+        case 'a':
+        case 'b': {
+            cout << "\nEnter stock symbol: ";
+            cin >> symbol;
+            Stock *pStock = stockTree.search(Stock("", symbol));
 
-                if (pStock == nullptr)
-                    cerr << "Error: stock not found\n";
-                else if (choice == 'a')
-                    cout << "Stock name: " << pStock->getName() << endl;
-                else
-                    cout << "Stock price: " << pStock->getPrice() << endl;
+            if (pStock == nullptr)
+                cerr << "Error: stock not found\n";
+            else if (choice == 'a')
+                cout << "Stock name: " << pStock->getName() << endl;
+            else
+                cout << "Stock price: " << pStock->getPrice() << endl;
 
-                delete pStock;
-                pStock = nullptr;
-            } break;
-            case 'c':
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                do {
-                    cout << "\nEnter stock name: ";
-                    getline(cin, name);
+            delete pStock;
+            pStock = nullptr;
+        } break;
 
-                    if (name.empty())
-                        cerr << "Error: invalid input\n";
-                } while (name.empty());
+        case 'c':
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-                do {
-                    cout << "Enter stock symbol: ";
-                    getline(cin, symbol);
+            do {
+                cout << "\nEnter stock name: ";
+                getline(cin, name);
 
-                    // find_first_of returns position of the first character that matches
-                    // if no such character is found, the function returns string::npos (not a position)
-                    
-                    // makes sure the symbol is not empty and is only one word
-                    if (symbol.empty() || symbol.find_first_of(" \t\n\v\f\r") != string::npos)
-                        cerr << "Error: invalid input\n\n";
-                } while (symbol.empty() || symbol.find_first_of(" \t\n\v\f\r") != string::npos);
+                if (name.empty())
+                    cerr << "Error: invalid input\n";
+            } while (name.empty());
 
-                cout << "Enter stock price: ";
-                while (!(cin >> price) || price < 0) {
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            do {
+                cout << "Enter stock symbol: ";
+                getline(cin, symbol);
+
+                if (symbol.empty() || symbol.find_first_of(" \t\n\v\f\r") != string::npos)
                     cerr << "Error: invalid input\n\n";
+            } while (symbol.empty() || symbol.find_first_of(" \t\n\v\f\r") != string::npos);
 
-                    cout << "Enter stock price: ";
-                }
-                stockTree.insert(Stock(name, symbol, price));
-                break;
-            case 'd':
-                cout << "\n\tStocks"
-                     << "\n----------------------" << endl;
-                stockTree.inOrder();
-                break;
-            case 'e':
-                stockTree.inOrder(outFile);
-                outFile.close();
-                break;
-            default:
-                cerr << "\nError: invalid choice\n";
+            cout << "Enter stock price: ";
+            while (!(cin >> price) || price < 0) {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cerr << "Error: invalid input\n\n";
+                cout << "Enter stock price: ";
+            }
+
+            stockTree.insert(Stock(name, symbol, price));
+            break;
+
+        case 'd':
+            cout << "\n\tStocks\n----------------------" << endl;
+            stockTree.inOrder();
+            break;
+
+        case 'e':
+            stockTree.inOrder(outFile);
+            outFile.close();
+            break;
+
+        default:
+            cerr << "\nError: invalid choice\n";
         }
+
     } while (choice != 'e');
 }
-
 //*****************************************************************************************************
 /*
 
